@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from profiles_app import models
 from rest_framework.authentication import TokenAuthentication
 from profiles_app import permissions
+from rest_framework import filters
 
 class HelloApiView(APIView):
 
@@ -48,9 +49,6 @@ class HelloApiView(APIView):
         """delete an object"""
         return Response({'method':'DELETE'})
     
- 
-
-
 class HelloViewSet(viewsets.ViewSet):
     """TEST API ViewSets"""
 
@@ -87,7 +85,6 @@ class HelloViewSet(viewsets.ViewSet):
         """handle removing an object"""
         return Response({'http_method':'DELETE'})
     
-
 class UserProfileViewSet(viewsets.ModelViewSet):
 
     """handle creating and updating profiles"""
@@ -95,3 +92,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset=models.UserProfile.objects.all()
     authentication_classes=(TokenAuthentication,)
     permission_classes=(permissions.UpdateOwnProfile,)
+    filter_backends=(filters.SearchFilter,)
+    search_fields=('name','email')
